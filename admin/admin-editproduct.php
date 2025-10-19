@@ -214,7 +214,7 @@ if (!is_array($shop_images)) $shop_images = [];
                         <label>Tags</label>
                         <div class="category-options d-flex flex-wrap">
                             <?php
-                            $allTags = ['New Arrival', 'Best Seller', 'Limited Edition', 'Trending', 'Discount', 'Restocked'];
+                            $allTags = ['New Arrival', 'Featured', 'Top Rated', 'Trending', 'Discount', 'Restocked'];
                             $selectedTags = explode(',', $product['tags']);
                             foreach ($allTags as $tag) {
                                 $checked = in_array($tag, $selectedTags) ? 'checked' : '';

@@ -1,5 +1,5 @@
 <?php
-include '../dbcon.php';
+    include '../routes/dbcon.php';
 
 // Get form data safely
 $username = $_POST['username'];

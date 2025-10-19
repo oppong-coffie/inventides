@@ -1,6 +1,6 @@
 <?php
 session_start();
-include('../dbcon.php');
+include('../routes/dbcon.php');
 header('Content-Type: application/json');
 
 if (!isset($_SESSION['user_id'])) {

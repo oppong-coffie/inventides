@@ -1,8 +1,36 @@
+<?php
+session_start();
+include('dbcon.php');
+
+$total_price = 0;
+$total_items = 0;
+
+if (isset($_SESSION['user_id'])) {
+    $user_id = $_SESSION['user_id'];
+
+    $cart_query = "
+        SELECT c.quantity, i.price
+        FROM cart c
+        JOIN items i ON c.item_id = i.id
+        WHERE c.user_id = $user_id
+    ";
+    $cart_result = mysqli_query($conn, $cart_query);
+
+    if ($cart_result && mysqli_num_rows($cart_result) > 0) {
+        while ($row = mysqli_fetch_assoc($cart_result)) {
+            $total_items += $row['quantity'];
+            $total_price += $row['quantity'] * $row['price'];
+        }
+    }
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en" data-theme="light">
 
 
 <!-- ./index-2-light.html -19:00 GMT -->
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -56,15 +84,16 @@
                         <span class="cart__icon">
                             <i class="fa-regular fa-cart-shopping"></i>
                         </span>
-                        <a href="#0" class="c__one">
+                        <a href="cart.php" class="c__one">
                             <span class="text-black">
-                                $0.00
+                                $<?php echo number_format($total_price, 2); ?>
                             </span>
                         </a>
                         <span class="one">
-                            0
+                            <?php echo $total_items; ?>
                         </span>
                     </div>
+
                     <div class="flag__wrap">
                         <div class="flag">
                             <img src="assets/images/flag/us.png" alt="flag">
@@ -109,7 +138,7 @@
                     <li>
                         <a href="#0">Pages <i class="fa-regular fa-angle-down"></i></a>
                         <ul class="sub-menu">
-                            
+
                             <li class="subtwohober">
                                 <a href="shop-single.php">
                                     Shop Single

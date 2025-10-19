@@ -1,7 +1,7 @@
 <?php
 session_start(); // Start session at the top
 
-include "../dbcon.php";
+include "../routes/dbcon.php";
 
 // Get form data
 $email = $_POST["email"];

@@ -1,6 +1,7 @@
 <?php
 session_start();
-include('../dbcon.php');
+include('../routes/dbcon.php');
+file_put_contents('debug_log.txt', json_encode($_POST) . PHP_EOL, FILE_APPEND);
 
 // Ensure user is logged in
 if (!isset($_SESSION['user_id'])) {

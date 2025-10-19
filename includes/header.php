@@ -1,8 +1,9 @@
-
 <?php
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
+include('./routes/dbcon.php');
+
 ?>
 
 
@@ -13,6 +14,7 @@ if (session_status() === PHP_SESSION_NONE) {
 
 
 <!-- ./index-2.html -18:54 GMT -->
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -42,7 +44,7 @@ if (session_status() === PHP_SESSION_NONE) {
     <div class="top__header top-header-one pt-30 pb-30">
         <div class="container">
             <div class="top__wrapper">
-                <a href="index.php" class="main__logo">
+                <a href="?page=home" class="main__logo">
                     <img src="assets/images/logo/logo.png" alt="logo__image">
                 </a>
                 <div class="search__wrp">
@@ -50,32 +52,53 @@ if (session_status() === PHP_SESSION_NONE) {
                     <button><i class="fa-solid fa-search"></i></button>
                 </div>
                 <div class="account__wrap">
-                    
+
                     <div class="account d-flex align-items-center">
                         <div class="user__icon">
-                            <a href="#0">
+                            <a href="?page=myaccount">
                                 <i class="fa-regular fa-user"></i>
                             </a>
                         </div>
-                        <a href="./myaccount.php" class="acc__cont">
+                        <a href="?page=myaccount" class="acc__cont">
                             <span class="text-white">
                                 My Account
                             </span>
                         </a>
                     </div>
+                    <?php
+                    $total_price = 0;
+
+                    if (isset($_SESSION['user_id'])) {
+                        $user_id = $_SESSION['user_id'];
+
+                        $cart_query = "
+        SELECT c.quantity, i.new_price
+        FROM cart c
+        JOIN items i ON c.item_id = i.id
+        WHERE c.user_id = $user_id
+    ";
+                        $cart_result = mysqli_query($conn, $cart_query);
+
+                        if ($cart_result && mysqli_num_rows($cart_result) > 0) {
+                            while ($row = mysqli_fetch_assoc($cart_result)) {
+                                $total_price += $row['quantity'] * $row['new_price'];
+                            }
+                        }
+                    }
+                    ?>
+
                     <div class="cart d-flex align-items-center">
-                        <span class="cart__icon">
+                        <span class="cart__icon bg-primar">
                             <i class="fa-regular fa-cart-shopping"></i>
                         </span>
-                        <a href="./cart.php" class="c__one">
-                            <span class="text-white">
-                                $0.00
+                        <a href="?page=cart" class="c__one">
+                            <span class="text-white fw-semibold">
+                                $<?php echo number_format($total_price, 2); ?>
                             </span>
                         </a>
-                        <span class="one">
-                            0
-                        </span>
                     </div>
+
+
                     <div class="flag__wrap">
                         <div class="flag">
                             <img src="assets/images/flag/us.png" alt="flag">
@@ -99,9 +122,9 @@ if (session_status() === PHP_SESSION_NONE) {
             </div>
             <!-- Stylish Welcome Text -->
             <div style="display: flex; justify-content: flex-end; align-items: center; margin-top: 10px;">
-    <?php
-    if (isset($_SESSION['username'])) {
-        echo "
+                <?php
+                if (isset($_SESSION['username'])) {
+                    echo "
         <h6 style='
             font-family: Poppins, sans-serif;
             color: #ffffff;
@@ -110,11 +133,11 @@ if (session_status() === PHP_SESSION_NONE) {
             margin: 0;
         '>
             Welcome, <span style='color: rgb(0, 215, 255); font-weight: 600;'>"
-            . htmlspecialchars($_SESSION['username']) .
-            "</span> 👋
+                        . htmlspecialchars($_SESSION['username']) .
+                        "</span> 👋
         </h6>";
-    } else {
-        echo "
+                } else {
+                    echo "
         <h6 style='
             font-family: Poppins, sans-serif;
             color: #ffffff;
@@ -123,9 +146,9 @@ if (session_status() === PHP_SESSION_NONE) {
         '>
             Welcome to <span style='color: rgb(0, 215, 255); font-weight: 600;'>Inventides</span>!
         </h6>";
-    }
-    ?>
-</div>
+                }
+                ?>
+            </div>
 
         </div>
     </div>
@@ -142,59 +165,39 @@ if (session_status() === PHP_SESSION_NONE) {
                                 class="fa-sharp text-white fa-light mr-60 fa-bars"></i></button>
                     </li>
                     <li>
-                        <a href="index.php">Home</a>
+                        <a href="?page=home">Home</a>
                     </li>
                     <li>
-                        <a href="about.php">About Us</a>
+                        <a href="?page=about">About Us</a>
                     </li>
-                    <li>
+                    <!-- <li>
                         <a href="#0">Pages <i class="fa-regular fa-angle-down"></i></a>
                         <ul class="sub-menu">
-                        
+
                             <li class="subtwohober">
-                                <a href="shop-single.php">
+                                <a href="?page=shop-single">
                                     Shop Single
                                 </a>
                             </li>
                             <li class="subtwohober">
-                                <a href="cart.php">
+                                <a href="?page=cart">
                                     Cart Page
                                 </a>
                             </li>
-                            <li class="subtwohober">
-                                <a href="checkout.php">
-                                    Checkout Page
-                                </a>
-                            </li>
-                            <li class="subtwohober">
-                                <a href="register.php">
-                                    Register
-                                </a>
-                            </li>
-                            <li class="subtwohober">
-                                <a href="login.php">
-                                    Login
-                                </a>
-                            </li>
-                            <li class="subtwohober">
-                                <a href="error.php">
-                                    404 Error
-                                </a>
-                            </li>
                         </ul>
+                    </li> -->
+                    <li>
+                        <a href="?page=support">Support</a>
                     </li>
                     <li>
-                        <a href="support.php">Support</a>
+                        <a href="?page=music">Music</a>
                     </li>
                     <li>
-                        <a href="music.php">Music</a>
-                    </li>
-                    <li>
-                        <a href="shop.php">Shop</a>
+                        <a href="?page=shop">Shop</a>
                     </li>
 
                     <li>
-                        <a href="contact.php">Contact Us</a>
+                        <a href="?page=contact">Contact Us</a>
                     </li>
                 </ul>
                 <div class="shipping__item d-none d-sm-flex align-items-center">

@@ -101,6 +101,7 @@ $total_items = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) AS total 
     <a href="admin-products.php"><i class="fa-solid fa-box me-2"></i>Manage Products</a>
     <a href="admin-users.php"><i class="fa-solid fa-users me-2"></i>Manage Users</a>
     <a href="admin-orders.php"><i class="fa-solid fa-file-invoice-dollar me-2"></i>Orders</a>
+    <a href="admin-orders.php"><i class="fa-solid fa-file-invoice-dollar me-2"></i>Reviews</a>
     <a href="../routes/logout.php"><i class="fa-solid fa-right-from-bracket me-2"></i>Logout</a>
   </div>
 
@@ -174,6 +175,7 @@ $total_items = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) AS total 
   </div>
 
   <!-- Bootstrap JS -->
+   
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

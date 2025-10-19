@@ -197,7 +197,7 @@ $total_items = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) AS total 
             <label>Tags</label>
             <div class="category-options d-flex flex-wrap">
               <?php
-              $tags = ['New Arrival','Best Seller','Limited Edition','Trending','Discount','Restocked'];
+              $tags = ['New Arrival','Featured','Top Rated','Trending','Discount','Restocked'];
               foreach ($tags as $i => $tag) {
                 $id = 'tag' . ($i + 1);
                 echo "
