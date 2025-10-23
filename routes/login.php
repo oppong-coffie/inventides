@@ -21,12 +21,12 @@ if (mysqli_num_rows($query) > 0) {
         $_SESSION['username'] = $row['username'];
         $_SESSION['email'] = $row['email'];
 
-        echo "<script>alert('Login successful!'); window.location.href='../';</script>";
+        echo "<script>window.location.href='../';</script>";
     } else {
-        echo "<script>alert('Incorrect password!'); window.location.href='../login.html';</script>";
+        echo "<script> window.location.href='../login.html';</script>";
     }
 } else {
-    echo "<script>alert('No account found with that email!'); window.location.href='../login.php';</script>";
+    echo "<script> window.location.href='../login.php';</script>";
 }
 
 // Close connection

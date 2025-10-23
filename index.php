@@ -1,4 +1,5 @@
 <?php
+
 include('./routes/dbcon.php');
 
 // Fetch latest 6 products safely using prepared statements
@@ -10,19 +11,19 @@ include_once('includes/header.php');
 ?>
 
 <main>
-  <!-- Dynamic Page Routing -->
-  <?php
-  $allowed_pages = ['home', 'shop', 'cart', 'checkout', 'login', 'register', 'myaccount', 'error',  'about', 'contact', 'support', 'music', 'shop-single'];
+    <!-- Dynamic Page Routing -->
+    <?php
+    $allowed_pages = ['home', 'shop', 'cart', 'checkout', 'login', 'register', 'myaccount', 'error',  'about', 'contact', 'support', 'music', 'shop-single', 'order'];
 
-  $page = $_GET['page'] ?? 'home';
-  $page = preg_replace('/[^a-zA-Z0-9_-]/', '', $page); // sanitize input
+    $page = $_GET['page'] ?? 'home';
+    $page = preg_replace('/[^a-zA-Z0-9_-]/', '', $page); // sanitize input
 
-  if (in_array($page, $allowed_pages)) {
-      include("pages/$page.php");
-  } else {
-      include('pages/error.php');
-  }
-  ?>
+    if (in_array($page, $allowed_pages)) {
+        include("pages/$page.php");
+    } else {
+        include('pages/error.php');
+    }
+    ?>
 </main>
 
 <?php include_once('includes/footer.php'); ?>
@@ -44,7 +45,9 @@ include_once('includes/header.php');
         try {
             const response = await fetch('routes/add-to-cart.php', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
                 body: `item_id=${itemId}&quantity=1`
             });
             const data = await response.json();
@@ -116,6 +119,50 @@ include_once('includes/header.php');
     }
 </script>
 
+
+<script>
+    function showToast2(message, type = 'info') {
+        const toast = document.createElement('div');
+        toast.className = `toast-message ${type}`;
+        toast.textContent = message;
+        document.body.appendChild(toast);
+        setTimeout(() => toast.classList.add('show'), 100);
+        setTimeout(() => toast.classList.remove('show'), 2500);
+        setTimeout(() => toast.remove(), 3000);
+    }
+
+    if (!document.getElementById('toast-style')) {
+        const style = document.createElement('style');
+        style.id = 'toast-style';
+        style.textContent = `
+.toast-message {
+  position: fixed;
+  top: 20px;
+  right: -350px;
+  background: rgba(18,18,59,0.95);
+  color: #fff;
+  border: 1px solid #007bff;
+  padding: 12px 20px;
+  border-radius: 10px;
+  font-weight: 500;
+  box-shadow: 0 0 12px rgba(0,123,255,0.4);
+  z-index: 9999;
+  opacity: 0;
+  transition: all 0.4s ease;
+}
+.toast-message.show {
+  opacity: 1;
+  right: 20px;
+}
+.toast-message.info { border-left: 5px solid #00c4ff; }
+.toast-message.warning { border-left: 5px solid #ffc107; color:#111; }
+.toast-message.error { border-left: 5px solid #ff4d4d; }
+  `;
+        document.head.appendChild(style);
+    }
+</script>
+
+
 <!-- JS Libraries -->
 <script src="assets/js/jquery-3.7.1.min.js"></script>
 <script src="assets/js/bootstrap.min.js"></script>
@@ -129,4 +176,5 @@ include_once('includes/header.php');
 <script src="assets/js/jquery.waypoints.js"></script>
 <script src="assets/js/script.js"></script>
 </body>
+
 </html>

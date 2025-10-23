@@ -1,6 +1,6 @@
 <?php
 session_start();
-include('../dbcon.php');
+include('./dbcon.php');
 
 if (!isset($_SESSION['user_id'])) {
     exit('<p class="text-center py-5 text-white">⚠️ Please log in to view your cart.</p>');

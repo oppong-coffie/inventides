@@ -1,12 +1,11 @@
 <?php
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
+    
 }
 include('./routes/dbcon.php');
 
 ?>
-
-
 
 
 <!DOCTYPE html>
@@ -59,7 +58,7 @@ include('./routes/dbcon.php');
                                 <i class="fa-regular fa-user"></i>
                             </a>
                         </div>
-                        <a href="?page=myaccount" class="acc__cont">
+                        <a href="#" onclick="handleProtected('myaccount')" class="acc__cont">
                             <span class="text-white">
                                 My Account
                             </span>
@@ -91,7 +90,7 @@ include('./routes/dbcon.php');
                         <span class="cart__icon bg-primar">
                             <i class="fa-regular fa-cart-shopping"></i>
                         </span>
-                        <a href="?page=cart" class="c__one">
+                        <a href="#" onclick="handleProtected('cart')" class="c__one">
                             <span class="text-white fw-semibold">
                                 $<?php echo number_format($total_price, 2); ?>
                             </span>
@@ -289,3 +288,57 @@ include('./routes/dbcon.php');
     <div class="mouse-cursor cursor-outer"></div>
     <div class="mouse-cursor cursor-inner"></div>
     <!-- Mouse cursor area end here -->
+
+    <script>
+        function showToast(message, type = 'info') {
+            const toast = document.createElement('div');
+            toast.className = `toast-message ${type}`;
+            toast.textContent = message;
+            document.body.appendChild(toast);
+            setTimeout(() => toast.classList.add('show'), 100);
+            setTimeout(() => toast.classList.remove('show'), 2500);
+            setTimeout(() => toast.remove(), 3000);
+        }
+
+        if (!document.getElementById('toast-style')) {
+            const style = document.createElement('style');
+            style.id = 'toast-style';
+            style.textContent = `
+.toast-message {
+  position: fixed;
+  top: 20px;
+  right: -350px;
+  background: rgba(18,18,59,0.95);
+  color: #fff;
+  border: 1px solid #007bff;
+  padding: 12px 20px;
+  border-radius: 10px;
+  font-weight: 500;
+  box-shadow: 0 0 12px rgba(0,123,255,0.4);
+  z-index: 9999;
+  opacity: 0;
+  transition: all 0.4s ease;
+}
+.toast-message.show {
+  opacity: 1;
+  right: 20px;
+}
+.toast-message.info { border-left: 5px solid #00c4ff; }
+.toast-message.warning { border-left: 5px solid #ffc107; color:#111; }
+.toast-message.error { border-left: 5px solid #ff4d4d; }
+  `;
+            document.head.appendChild(style);
+        }
+    </script>
+    <script>
+        function handleProtected(page) {
+            const loggedIn = <?php echo isset($_SESSION['user_id']) ? 'true' : 'false'; ?>;
+            if (!loggedIn) {
+                showToast('⚠️ Please log in to access your account.', 'warning');
+                setTimeout(() => window.location.href = '?page=login', 1800);
+            } else {
+                window.location.href = `?page=${page}`;
+            }
+        }
+    </script>
+    

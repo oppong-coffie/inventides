@@ -261,7 +261,7 @@ include_once('includes/header.php'); ?>
           <div id="latest-item" class="tab-pane fade show active">
             <div class="row g-4">
               <?php
-              include('./dbcon.php');
+              include('./routes/dbcon.php');
               $latest = mysqli_query($conn, "SELECT * FROM items ORDER BY id DESC LIMIT 6");
               if (mysqli_num_rows($latest) > 0):
                 while ($row = mysqli_fetch_assoc($latest)): ?>

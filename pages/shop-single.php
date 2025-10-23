@@ -218,12 +218,12 @@ if (mysqli_num_rows($result) > 0) {
                     </div>
                     <div id="review" class="tab-pane fade">
                         <div class="review-wrp">
-                        <section class="pt-60">
-  <div class="container">
-    <h3 class="text-white mb-4">Customer Reviews</h3>
-    <?php include('review-section.php'); ?>
-  </div>
-</section>
+                            <section class="pt-60">
+                                <div class="container">
+                                    <h3 class="text-white mb-4">Customer Reviews</h3>
+                                    <?php include('review-section.php'); ?>
+                                </div>
+                            </section>
 
                             <div class="comment-form">
                                 <form action="routes/add-review.php" method="POST" id="reviewForm">
@@ -265,86 +265,9 @@ if (mysqli_num_rows($result) > 0) {
 <!-- Back to top area end here -->
 
 <!-- Ajax -->
-<script>
-    function addToCart(itemId) {
-        const button = event.currentTarget;
-        const original = button.innerHTML;
-        button.innerHTML = '<i class="fa-solid fa-spinner fa-spin pe-2"></i> Adding...';
 
-        fetch('routes/add-to-cart.php', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded'
-                },
-                body: `item_id=${itemId}&quantity=1`
-            })
-            .then(res => res.json())
-            .then(data => {
-                button.innerHTML = original;
-                if (data.status === 'success') {
-                    showToast('✅ ' + data.message, 'success');
-                    refreshCartTotal(); // ✅ Update header total in real-time
-                } else if (data.status === 'error' && data.message.includes('log in')) {
-                    showToast('⚠️ Please log in first!', 'warning');
-                    setTimeout(() => window.location.href = 'login.php', 1500);
-                } else {
-                    showToast('❌ ' + data.message, 'danger');
-                }
-            })
-            .catch(() => {
-                button.innerHTML = original;
-                showToast('⚠️ Something went wrong.', 'danger');
-            });
-    }
 
-    // ✅ Fetch and update cart total from DB
-    function refreshCartTotal() {
-        fetch('routes/get-cart-total.php')
-            .then(res => res.json())
-            .then(data => {
-                const totalEl = document.querySelector('.cart .c__one span');
-                if (totalEl) {
-                    totalEl.textContent = `$${data.total_price}`;
-                }
-            })
-            .catch(err => console.error('Cart total refresh failed:', err));
-    }
 
-    // ✅ Toast messages
-    function showToast(message, type = 'success') {
-        const toast = document.createElement('div');
-        toast.textContent = message;
-        toast.className = `toast-message bg-${type}`;
-        document.body.appendChild(toast);
-        setTimeout(() => toast.remove(), 2500);
-    }
-
-    // ✅ Toast styling
-    const toastStyle = document.createElement('style');
-    toastStyle.textContent = `
-.toast-message {
-  position: fixed;
-  top: 20px;
-  right: 20px;
-  color: #fff;
-  padding: 12px 20px;
-  border-radius: 6px;
-  font-weight: 500;
-  z-index: 9999;
-  box-shadow: 0 0 10px rgba(0,0,0,0.3);
-  animation: fadeInOut 2.5s ease;
-}
-.bg-success { background: #28a745; }
-.bg-danger { background: #dc3545; }
-.bg-warning { background: #ffc107; color: #111; }
-@keyframes fadeInOut {
-  0% { opacity: 0; transform: translateY(-10px); }
-  10% { opacity: 1; transform: translateY(0); }
-  90% { opacity: 1; }
-  100% { opacity: 0; transform: translateY(-10px); }
-}`;
-    document.head.appendChild(toastStyle);
-</script>
 
 <!-- REVIEW aJAX -->
 <script>

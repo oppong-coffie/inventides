@@ -1,17 +1,9 @@
 <?php
-session_start();
 
-if (!isset($_SESSION['user_id'])) {
-  echo "<script>
-        alert('Please login to see cart!');
-        window.location.href = '?page=login';
-    </script>";
-  exit();
-}
 
 $user_id = $_SESSION['user_id'];
 
-include('../routes/dbcon.php');
+include('./routes/dbcon.php');
 
 // Fetch cart items with product details
 $query = "
@@ -174,27 +166,45 @@ include_once('includes/header.php');
 
   // ✅ Remove item live
   function removeFromCart(cartId) {
-    if (!confirm('Remove this item from your cart?')) return;
+  Swal.fire({
+    title: 'Remove item?',
+    text: 'Are you sure you want to remove this item from your cart?',
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#d33',
+    cancelButtonColor: '#3085d6',
+    confirmButtonText: 'Yes, remove it',
+    cancelButtonText: 'Cancel'
+  }).then((result) => {
+    if (result.isConfirmed) {
+      fetch('routes/remove-cart.php', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+          },
+          body: `cart_id=${cartId}`
+        })
+        .then(res => res.json())
+        .then(data => {
+          if (data.status === 'success') {
+            Swal.fire({
+              title: 'Removed!',
+              text: 'The item was removed from your cart.',
+              icon: 'success',
+              timer: 2000,
+              showConfirmButton: false
+            });
+            refreshCartTotal();
+            updateCartTable();
+          } else {
+            Swal.fire('Error!', data.message, 'error');
+          }
+        })
+        .catch(() => Swal.fire('Error!', 'Failed to remove item.', 'error'));
+    }
+  });
+}
 
-    fetch('routes/remove-cart.php', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded'
-        },
-        body: `cart_id=${cartId}`
-      })
-      .then(res => res.json())
-      .then(data => {
-        if (data.status === 'success') {
-          showToast('🗑️ Item removed!', 'success');
-          refreshCartTotal();
-          updateCartTable();
-        } else {
-          showToast('❌ ' + data.message, 'danger');
-        }
-      })
-      .catch(() => showToast('⚠️ Failed to remove item.', 'danger'));
-  }
 
 
   // ✅ Refresh header cart total dynamically
@@ -313,6 +323,8 @@ include_once('includes/header.php');
 <script src="assets/js/jquery.waypoints.js"></script>
 <!-- Script Js -->
 <script src="assets/js/script.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 </body>
 
 

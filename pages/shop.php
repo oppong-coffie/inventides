@@ -109,7 +109,7 @@ if (!$result) {
                                 <div class="col-xl-4 col-lg-6 col-md-6">
                                     <div class="product__item bor">
                                         <a href="#0" class="wishlist"><i class="fa-regular fa-heart"></i></a>
-                                        <a href="shop-single.php?id=<?php echo $row['id']; ?>" class="product__image pt-20 d-block">
+                                        <a href="?page=shop-single&id=<?php echo $row['id']; ?>" class="product__image pt-20 d-block">
                                             <img class="font-image"
                                                 src="assets/images/product/<?php echo htmlspecialchars($row['image_front']); ?>"
                                                 alt="<?php echo htmlspecialchars($row['name']); ?>">
@@ -119,7 +119,7 @@ if (!$result) {
                                         </a>
                                         <div class="product__content">
                                             <h4 class="mb-15">
-                                                <a class="primary-hover" href="shop-single.php?id=<?php echo $row['id']; ?>">
+                                                <a class="primary-hover" href="?page=shop-single&id=<?php echo $row['id']; ?>">
                                                     <?php echo htmlspecialchars($row['name']); ?>
                                                 </a>
                                             </h4>
